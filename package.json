@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export"
+    "export": "next export",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "engines": {
     "node": ">=16.x"
@@ -36,5 +38,8 @@
   "bugs": {
     "url": "https://github.com/sandeshsyadav/fun-portfolio/issues"
   },
-  "homepage": "https://github.com/sandeshsyadav/fun-portfolio#readme"
+  "homepage": "https://github.com/sandeshsyadav/fun-portfolio.github.io",
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  }
 }

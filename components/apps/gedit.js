@@ -15,11 +15,17 @@ export class Gedit extends Component {
         emailjs.init(process.env.NEXT_PUBLIC_USER_ID);
     }
 
+
+
     sendMessage = async () => {
         let name = $("#sender-name").val();
         let subject = $("#sender-subject").val();
         let message = $("#sender-message").val();
-
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Function to validate an email address
+        const validateEmail = (email) => {
+            return emailRegex.test(email);
+        };
         name = name.trim();
         subject = subject.trim();
         message = message.trim();
@@ -30,6 +36,12 @@ export class Gedit extends Component {
             $("#sender-name").val('');
             $("#sender-name").attr("placeholder", "Name must not be Empty!");
             error = true;
+        } else {
+            if (!validateEmail(name)) {
+                $("#sender-name").val('');
+                $("#sender-name").attr("placeholder", "Please enter a valid email!");
+                error = true;
+            }
         }
 
         if (message.length === 0) {
@@ -52,7 +64,7 @@ export class Gedit extends Component {
         emailjs.send(serviceID, templateID, templateParams).then(() => {
             this.setState({ sending: false });
             $("#close-gedit").trigger("click");
-        }).catch(() => {
+        }).catch((err) => {
             this.setState({ sending: false });
             $("#close-gedit").trigger("click");
         })
@@ -70,11 +82,11 @@ export class Gedit extends Component {
                 <div className="relative flex-grow flex flex-col bg-ub-gedit-dark font-normal windowMainScreen">
                     <div className="absolute left-0 top-0 h-full px-2 bg-ub-gedit-darker"></div>
                     <div className="relative">
-                        <input id="sender-name" className=" w-full text-ubt-gedit-orange focus:bg-ub-gedit-light outline-none font-medium text-sm pl-6 py-0.5 bg-transparent" placeholder="Your Email / Name :" spellCheck="false" autoComplete="off" type="text" />
+                        <input id="sender-name" className=" w-full text-ubt-gedit-orange focus:bg-ub-gedit-light outline-none font-medium text-sm pl-6 py-0.5 bg-transparent" placeholder="Your Email  :" spellCheck="false" autoComplete="off" type="text" />
                         <span className="absolute left-1 top-1/2 transform -translate-y-1/2 font-bold light text-sm text-ubt-gedit-blue">1</span>
                     </div>
                     <div className="relative">
-                        <input id="sender-subject" className=" w-full my-1 text-ubt-gedit-blue focus:bg-ub-gedit-light gedit-subject outline-none text-sm font-normal pl-6 py-0.5 bg-transparent" placeholder="subject (may be a feedback for this website!)" spellCheck="false" autoComplete="off" type="text" />
+                        <input id="sender-subject" className=" w-full my-1 text-ubt-gedit-blue focus:bg-ub-gedit-light gedit-subject outline-none text-sm font-normal pl-6 py-0.5 bg-transparent" placeholder="subject (interested in hiring me!)" spellCheck="false" autoComplete="off" type="text" />
                         <span className="absolute left-1 top-1/2 transform -translate-y-1/2 font-bold  text-sm text-ubt-gedit-blue">2</span>
                     </div>
                     <div className="relative flex-grow">
